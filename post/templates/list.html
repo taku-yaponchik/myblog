@@ -1,13 +1,74 @@
 {% extends 'base.html'%}
-
+{% load static %}
 {%block title%}
-    MYBLOG
+
 {%endblock%}
 
 {%block content%}
 
-    {%for post in posts%}
-        <a href="{{post.get_absolute_utl}}"> <h2>{{post.title}}</h2></a>
-    {%endfor%}
+{%for post in post_data%}
 
+<div class="row pt-md-4">
+	<div class="col-md-12">
+		<div class="blog-entry ftco-animate d-md-flex">
+			<a href="{{post.get_absolute_url}}" class="img img-2" style="background-image: url({{post.image.url}});"></a>
+			<div class="text text-2 pl-md-4">
+				<h3 class="mb-2"><a href="{{post.get_absolute_url}}">{{post.title}}</a></h3>
+				<div class="meta-wrap">
+					<p class="meta">
+						<span><i class="icon-calendar mr-2"></i>
+							{{post.created}}
+						</span>
+						<span>
+							<a href="single.html">
+								<i class="icon-folder-o mr-2"></i>
+								blog
+							</a></span>
+						<!--Для общего счёта всех комментариев в этом посту-->
+						<span><i class="icon-comment2 mr-2"></i>
+							{% with post.comments.count as total_comments %}
+								{{ total_comments }} comment{{ total_comments|pluralize }}
+								{% if total_comments == 0 %}
+									no comment
+							{% endif %}
+							{% endwith %}
+						</span>
+					</p>
+				</div>
+				<p class="mb-4">{{ post.body|truncatewords:15 }}</p>
+				<p><a href="{{post.get_absolute_url}}" class="btn-custom">Read More <span class="ion-ios-arrow-forward"></span></a></p>
+			</div>
+		</div>
+	</div>
+</div><!-- END-->
+{%endfor%}
+
+{% if is_paginated%}
+<div class="row">
+	<div class="col">
+		<div class="block-27">
+			<ul>
+				<li class="page{% if not prev_url%} disabled {%endif%}">
+					<a href="{{ prev_url }}">&lt;</a>
+				</li>
+			{% for n in post_data.paginator.page_range %}
+			{% if post_data.number == n %}
+				<li class="active">
+					<a href="?page={{n}}" > {{n}} </a>
+				</li>
+			{% elif n > post_data.number|add:-3 and n < post_data.number|add:3 %}
+				<li>
+					<a href="?page={{n}}" > {{n}} </a>
+				</li>
+			{% endif %}
+
+			{% endfor %}
+				<li class="{% if not next %} disabled {%endif%}">
+					<a href="{{ next }}">&gt;</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+{%endif%}
 {%endblock%}

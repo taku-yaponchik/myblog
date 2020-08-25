@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 from django.urls import reverse
-from django.utils import timezone
+# from django.utils import timezone
 from django.contrib.auth.models import User
 
 
@@ -26,9 +26,10 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    image = models.ImageField(upload_to='posts/%Y/%m/%d/', blank=True)
 
     # Менеджер по умолчанию
-    object = models.Manager()
+    objects = models.Manager()
     # Менеджер который мы создали
     published = PublishedManager()
 
@@ -37,8 +38,30 @@ class Post(models.Model):
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
 
-    def get_absolute_utl(self):
+    def get_absolute_url(self):
         return reverse('post_detail', args=[self.slug])
 
     def __str__(self):
         return self.title
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    name = models.CharField(max_length=50)
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+
+
+    class Meta:
+        ordering = ['-created']
+        verbose_name = 'Коментария'
+        verbose_name_plural = 'Коментарии'
+
+    def __str__(self):
+        return 'Comment by {} on {}'.format(self.name, self.post)
+
+# class Categories(models.Model):
+#
+#     name_cate =
