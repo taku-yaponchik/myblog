@@ -104,97 +104,50 @@
 						{%endblock%}
 						<div class="sidebar-box ftco-animate">
 							<h3 class="sidebar-heading">Latest Articles</h3>
-{% extends 'base.html'%}
-{% load static %}
-{%block title%}
-
-{%endblock%}
-
-{%block content%}
-
-{%for post in post_data%}
-
-<div class="row pt-md-4">
-	<div class="col-md-12">
-		<div class="blog-entry ftco-animate d-md-flex">
-			<a href="{{post.get_absolute_url}}" class="img img-2" style="background-image: url({{post.image.url}});"></a>
-			<div class="text text-2 pl-md-4">
-				<h3 class="mb-2"><a href="{{post.get_absolute_url}}">{{post.title}}</a></h3>
-				<div class="meta-wrap">
-					<p class="meta">
-						<span><i class="icon-calendar mr-2"></i>
-							{{post.created}}
-						</span>
-						<span>
-							<a href="single.html">
-								<i class="icon-folder-o mr-2"></i>
-								blog
-							</a></span>
-						<!--Для общего счёта всех комментариев в этом посту-->
-						<span><i class="icon-comment2 mr-2"></i>
-							{% with post.comments.count as total_comments %}
-								{{ total_comments }} comment{{ total_comments|pluralize }}
-								{% if total_comments == 0 %}
-									no comment
-							{% endif %}
-							{% endwith %}
-						</span>
-					</p>
-				</div>
-				<p class="mb-4">{{ post.body|truncatewords:15 }}</p>
-				<p><a href="{{post.get_absolute_url}}" class="btn-custom">Read More <span class="ion-ios-arrow-forward"></span></a></p>
-			</div>
-		</div>
-	</div>
-</div><!-- END-->
-{%endfor%}
-
-{% if is_paginated%}
-<div class="row">
-	<div class="col">
-		<div class="block-27">
-			<ul>
-				<li class="page{% if not prev_url%} disabled {%endif%}">
-					<a href="{{ prev_url }}">&lt;</a>
-				</li>
-			{% for n in post_data.paginator.page_range %}
-			{% if post_data.number == n %}
-				<li class="active">
-					<a href="?page={{n}}" > {{n}} </a>
-				</li>
-			{% elif n > post_data.number|add:-3 and n < post_data.number|add:3 %}
-				<li>
-					<a href="?page={{n}}" > {{n}} </a>
-				</li>
-			{% endif %}
-
-			{% endfor %}
-				<li class="{% if not next %} disabled {%endif%}">
-					<a href="{{ next }}">&gt;</a>
-				</li>
-			</ul>
-		</div>
-	</div>
-</div>
-{%endif%}
-{%endblock%}
 
 
+						{%for latest_post in latest_posts %}
 
-							<div class="sidebar-box ftco-animate">
-								<h3 class="sidebar-heading">Paragraph</h3>
-								<p>"My Blog" was created to post about my successes and everyday affairs. Also in the "Store" section you can buy different things at a better price.</p>
+							<div class="block-21 mb-4 d-flex">
+								<a class="blog-img mr-4" style="background-image: url({{latest_post.image.url}});"></a>
+								<div class="text">
+									<h3 class="heading"><a href="#">{{latest_post.title}}</a></h3>
+									<div class="meta">
+										<div><a href="#"><span class="icon-calendar"></span> {{latest_post.created}}</a></div>
+										<div><a href="#"><span class="icon-person"></span> {{latest_post.author|title}} </a></div>
+										<div><a href="#"><span class="icon-chat"></span>
+										{% with latest_post.comments.count as total_comments %}
+											({{ total_comments }})
+										{% endwith %}
+
+										</a></div>
+									</div>
+								</div>
 							</div>
-						</div><!-- END COL -->
+						{%endfor%}
+						</div>
+
+
+
+						<div class="sidebar-box ftco-animate">
+							<h3 class="sidebar-heading">Paragraph</h3>
+							<p>"My Blog" was created to post about my successes and everyday affairs. Also in the "Store" section you can buy different things at a better price.</p>
+						</div>
 					</div>
 				</div>
 			</div>
+
 		</section>
 	</div><!-- END COLORLIB-MAIN -->
 </div><!-- END COLORLIB-PAGE -->
 
 <!-- loader -->
-<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+<div id="ftco-loader" class="show fullscreen">
+	<svg class="circular" width="48px" height="48px">
+		<circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+		<circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/>
+	</svg>
+</div>
 
 
 <script src="{% static 'js/jquery.min.js' %}"></script>

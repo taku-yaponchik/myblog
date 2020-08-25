@@ -28,9 +28,6 @@
 						<span><i class="icon-comment2 mr-2"></i>
 							{% with post.comments.count as total_comments %}
 								{{ total_comments }} comment{{ total_comments|pluralize }}
-								{% if total_comments == 0 %}
-									no comment
-							{% endif %}
 							{% endwith %}
 						</span>
 					</p>

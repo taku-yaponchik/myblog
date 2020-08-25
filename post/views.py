@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 
 def post_list(request):
     post = Post.published.all()
-    latests_post = Post.published.order_by('created')[:5]
+    latest_posts = Post.published.order_by('created')[:5]
     pages_data = Paginator(post, 2)
     page_number = request.GET.get('page', 1)
     page = pages_data.get_page(page_number)
@@ -20,7 +20,7 @@ def post_list(request):
     else:
         next = ''
     context = {
-        'latests_post': latests_post,
+        'latest_posts': latest_posts,
         'post_data': page,
         'is_paginated': is_paginated,
         'next': next,
