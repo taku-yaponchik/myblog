@@ -33,6 +33,9 @@ class Post(models.Model):
     # Менеджер который мы создали
     published = PublishedManager()
 
+    tags = models.ManyToManyField('Tag', blank = True, related_name = 'posts')
+
+
     class Meta:
         ordering = ['-created']
         verbose_name = 'Пост'
@@ -45,13 +48,14 @@ class Post(models.Model):
         return self.title
 
 
-class Comment(models.Model):
+class Comment(models.Model,):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
-    name = models.CharField(max_length=50)
-    body = models.TextField()
+    name = models.CharField(max_length=50, verbose_name = 'Имя')
+    body = models.TextField(verbose_name = 'Комментария')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
+
 
 
     class Meta:
@@ -60,8 +64,20 @@ class Comment(models.Model):
         verbose_name_plural = 'Коментарии'
 
     def __str__(self):
-        return 'Comment by {} on {}'.format(self.name, self.post)
+        return 'Comment by {} on {}'.format(self.name, self.post,)
 
-# class Categories(models.Model):
-#
-#     name_cate =
+class Tag(models.Model):
+    name = models.CharField(max_length = 50,)
+    slug = models.SlugField(max_length = 50, unique = True)
+    objects = models.Manager()
+
+    def get_absolute_url(self):
+        return reverse('tag_detail_url', kwargs = {'slug': self.slug})
+
+    class Meta:
+
+        verbose_name = 'Тег'
+        verbose_name_plural = 'Теги'
+
+    def __str__(self):
+        return self.name
