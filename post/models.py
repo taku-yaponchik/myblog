@@ -67,12 +67,12 @@ class Comment(models.Model,):
         return 'Comment by {} on {}'.format(self.name, self.post,)
 
 class Tag(models.Model):
-    name = models.CharField(max_length = 50,)
-    slug = models.SlugField(max_length = 50, unique = True)
+    name = models.CharField(max_length=50,)
+    slug = models.SlugField(max_length=50, unique=True)
     objects = models.Manager()
 
     def get_absolute_url(self):
-        return reverse('tag_detail_url', kwargs = {'slug': self.slug})
+        return reverse('tag_detail_url', kwargs={'slug': self.slug})
 
     class Meta:
 

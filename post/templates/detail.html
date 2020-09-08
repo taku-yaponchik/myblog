@@ -17,33 +17,27 @@
 </div>
 
 <!--Для общего счёта всех комментариев в этом посту-->
-
-
 <div class="pt-5 mt-5">
     <h3 class="mb-5 font-weight-bold">
         {% with comments.count as total_comments %}
         {{ total_comments }} comment{{ total_comments|pluralize }}
         {% endwith %}
     </h3>
-
     <div class="comment-form-wrap pt-5">
         <h3 class="mb-5">Leave a comment</h3>
-        <form action="." method="post" class="p-3 p-md-5 bg-light" method="post">
+        <form action="." method="post" class="p-3 p-md-5 bg-light" >
             {% csrf_token %}
             <div class="form-group">
                 {{comment_form.name.label}}
                 {{comment_form.name}}
             </div>
-            {{comment_form.body.label}}
-            {{comment_form.body}}
             <div class="form-group">
-
+                {{comment_form.body.label}}
+                {{comment_form.body}}
             </div>
-
             <div class="form-group">
                 <input type="submit" value="Post Comment" class="btn py-3 px-4 btn-primary">
             </div>
-
         </form>
     </div>
 
